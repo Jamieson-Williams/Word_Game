@@ -16,7 +16,7 @@ CONSONANTS = 'bcdfghjklmnpqrstvwxyz'
 HAND_SIZE = 7
 
 SCRABBLE_LETTER_VALUES = {
-    'a': 1, 'b': 3, 'c': 3, 'd': 2, 'e': 1, 'f': 4, 'g': 2, 'h': 4, 'i': 1, 'j': 8, 'k': 5, 'l': 1, 'm': 3, 'n': 1, 'o': 1, 'p': 3, 'q': 10, 'r': 1, 's': 1, 't': 1, 'u': 1, 'v': 4, 'w': 4, 'x': 8, 'y': 4, 'z': 10
+    '*': 0, 'a': 1, 'b': 3, 'c': 3, 'd': 2, 'e': 1, 'f': 4, 'g': 2, 'h': 4, 'i': 1, 'j': 8, 'k': 5, 'l': 1, 'm': 3, 'n': 1, 'o': 1, 'p': 3, 'q': 10, 'r': 1, 's': 1, 't': 1, 'u': 1, 'v': 4, 'w': 4, 'x': 8, 'y': 4, 'z': 10
 }
 
 # -----------------------------------
@@ -142,7 +142,8 @@ def deal_hand(n):
     """
     
     hand={}
-    num_vowels = int(math.ceil(n / 3))
+    hand['*'] = 1
+    num_vowels = int(math.ceil(n / 3)) - 1
 
     for i in range(num_vowels):
         x = random.choice(VOWELS)
@@ -201,6 +202,17 @@ def is_valid_word(word, hand, word_list):
     returns: boolean
     """
 
+    def wildcard_replacement(word):
+        wildcard_word = ''
+        if word.find('*') == -1:
+            return word
+        else:
+            for vowel in VOWELS:
+                wildcard_word = word.replace('*',vowel,1)
+                print(wildcard_word)
+
+    wildcard_replacement(word)
+    
     word = word.lower()
     copy_hand = hand.copy()
     if word in word_list:
@@ -212,7 +224,7 @@ def is_valid_word(word, hand, word_list):
         return True
     else:
         return False
-#print(is_valid_word('Rapture',{'r':1,'a':3,'p':2,'e':1,'t':1,'u':1},load_words()))
+print(is_valid_word('Rapture',{'r':1,'a':3,'p':2,'e':1,'t':1,'u':1, '*': 1},load_words()))
 
 #
 # Problem #5: Playing a hand
